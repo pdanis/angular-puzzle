@@ -1,0 +1,39 @@
+* {
+    font-family: 'Arial', 'Helvetica';
+}
+fieldset {
+    margin-bottom: 30px;
+}
+.puzzle {
+    border: 1px solid gray;
+}
+.advanced {
+    float: left;
+    padding: 20px;
+    margin: 0 20px 0 0;
+    min-width: 300px;
+}
+.advanced .puzzle {
+    clear: both;
+    margin-top: 30px;
+    border-spacing: 1px;
+}
+.advanced.solved .puzzle {
+    border-spacing: 0;
+}
+.advanced .puzzle td {
+    cursor: pointer;
+    padding: 0;
+}
+.advanced h2 {
+    margin: 0 0 10px 0;
+}
+.advanced .status {
+    float: left;
+    width: 40%;
+    height: 50px;
+}
+.advanced .size {
+    float: right;
+    height: 50px;
+}
