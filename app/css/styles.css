@@ -5,7 +5,16 @@ fieldset {
     margin-bottom: 30px;
 }
 .puzzle {
-    border: 1px solid gray;
+    border: 1px solid #ccc;
+    border-spacing: 0;
+}
+.puzzle td {
+    border-collapse: collapse;
+    border: 2px outset white;
+}
+.puzzle td.empty {
+    border: none;
+    background-color: #ddd !important;
 }
 .advanced {
     float: left;
@@ -16,10 +25,9 @@ fieldset {
 .advanced .puzzle {
     clear: both;
     margin-top: 30px;
-    border-spacing: 1px;
 }
-.advanced.solved .puzzle {
-    border-spacing: 0;
+.advanced.solved .puzzle td {
+    border: none;
 }
 .advanced .puzzle td {
     cursor: pointer;
