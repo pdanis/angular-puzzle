@@ -126,7 +126,7 @@
             replace: true,
             template: '<table>' +
                 '<tr ng-repeat="($row, row) in puzzle.grid">' +
-                '<td ng-repeat="($col, tile) in row" ng-click="puzzle.move($row, $col)" ng-style="tile.style" title="{{tile.id}}"></td>' +
+                '<td ng-repeat="($col, tile) in row" ng-click="puzzle.move($row, $col)" ng-style="tile.style" ng-class="{empty: tile.empty}" title="{{tile.id}}"></td>' +
                 '</tr>' +
                 '</table>',
             scope: {
