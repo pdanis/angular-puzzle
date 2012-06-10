@@ -8,15 +8,17 @@
     <script type="text/javascript" src="js/app.js"></script>
     <link rel="stylesheet" type="text/css" href="css/styles.css"/>
 </head>
-<body ng-app="puzzleApp" ng-controller="puzzleCtrl">
-    <fieldset>
-        <legend>Simple usage</legend>
-        <puzzle class="puzzle" size="3x3" src="img/angular.png"></puzzle>
-    </fieldset>
+<body ng-app="puzzleApp">
+    <h1>AngularJS sliding puzzle</h1>
 
-    <fieldset>
-        <legend>Advanced usage</legend>
-        <div class="advanced" ng-repeat="puzzle in puzzles" ng-class="{solved: puzzle.ctrl.isSolved()}">
+    <fieldset id="simple">
+        <legend>Basic</legend>
+        <puzzle class="puzzle" size="3x3" src="img/angular.png"></puzzle>
+    </fieldset><br/>
+
+    <fieldset id="advanced" ng-controller="advancedCtrl">
+        <legend>Advanced</legend>
+        <div ng-repeat="puzzle in puzzles" ng-class="{solved: puzzle.ctrl.isSolved()}">
             <h2>{{puzzle.title}}</h2>
             <div class="src">
                 <input type="text" ng-model="puzzle.src"/>
