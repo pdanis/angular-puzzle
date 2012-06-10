@@ -132,47 +132,54 @@
             scope: {
                 size: 'bind',
                 src: 'bind',
-                model: 'accessor'
+                ctrl: 'accessor'
             },
             link: function(scope) {
-                var puzzle,
+                var puzzle, rows, cols,
+                    loading = true,
                     image = new Image();
+
+                function create() {
+                    if (loading) {
+                        return;
+                    }
+
+                    var width = image.width / cols,
+                        height = image.height / rows;
+
+                    puzzle = scope.puzzle = Puzzle(rows, cols);
+                    scope.ctrl(puzzle);
+
+                    puzzle.traverse(function(tile, row, col) {
+                        tile.style = {
+                            width: width + 'px',
+                            height: height + 'px',
+                            background: (tile.empty ? 'none' : "url('" + scope.src + "') no-repeat -" + (col * width) + 'px -' + (row * height) + 'px')
+                        }
+                    });
+
+                    puzzle.shuffle();
+                }
 
                 scope.$watch('size', function(size) {
                     size = size.split('x');
                     if (size[0] >= 2 && size[1] >= 2) {
-                        create(size[0], size[1]);
+                        rows = size[0];
+                        cols = size[1];
+                        create();
                     }
                 });
 
-                function create(rows, cols) {
-                    puzzle = scope.puzzle = Puzzle(rows, cols);
-                    scope.model(puzzle);
-
-                    function setup() {
-                        var width = image.width / cols,
-                            height = image.height / rows;
-
-                        puzzle.traverse(function(tile, row, col) {
-                            tile.style = {
-                                width: width + 'px',
-                                height: height + 'px',
-                                background: (tile.empty ? 'none' : "url('" + scope.src + "') no-repeat -" + (col * height) + 'px -' + (row * width) + 'px')
-                            }
+                scope.$watch('src', function(src) {
+                    loading = true;
+                    image.src = src;
+                    image.onload = function() {
+                        loading = false;
+                        scope.$apply(function() {
+                            create();
                         });
-
-                        puzzle.shuffle();
-                    }
-
-                    image.src = scope.src;
-                    if (image.complete) {
-                        setup();
-                    } else {
-                        image.onload = function() {
-                            scope.$apply(setup);
-                        }
-                    }
-                }
+                    };
+                });
             }
         }
     });

@@ -45,3 +45,7 @@ fieldset {
     float: right;
     height: 50px;
 }
+.advanced .src input {
+    width: 100%;
+    font-family: "Courier New";
+}
