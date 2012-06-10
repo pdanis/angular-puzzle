@@ -9,30 +9,30 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css"/>
 </head>
 <body ng-app="puzzleApp" ng-controller="puzzleCtrl">
-<fieldset>
-    <legend>Simple usage</legend>
-    <puzzle class="puzzle" size="3x3" src="img/safari.png"></puzzle>
-</fieldset>
+    <fieldset>
+        <legend>Simple usage</legend>
+        <puzzle class="puzzle" size="3x3" src="img/angular.png"></puzzle>
+    </fieldset>
 
-<fieldset>
-    <legend>Advanced usage</legend>
-    <div class="advanced" ng-repeat="puzzle in puzzles" ng-class="{solved: puzzle.ctrl.isSolved()}">
-        <h2>{{puzzle.title}}</h2>
-        <div class="src">
-            <input type="text" ng-model="puzzle.src"/>
+    <fieldset>
+        <legend>Advanced usage</legend>
+        <div class="advanced" ng-repeat="puzzle in puzzles" ng-class="{solved: puzzle.ctrl.isSolved()}">
+            <h2>{{puzzle.title}}</h2>
+            <div class="src">
+                <input type="text" ng-model="puzzle.src"/>
+            </div>
+            <div class="status">
+                moves: <strong>{{puzzle.ctrl.moves}}</strong><br/>
+                solved: <strong>{{puzzle.ctrl.isSolved()}}</strong>
+            </div>
+            <div class="size">
+                rows: <input type="text" ng-model="puzzle.rows" size="2"/>
+                cols: <input type="text" ng-model="puzzle.cols" size="2"/><br/>
+                <button ng-click="puzzle.ctrl.shuffle()">shuffle</button>
+                <button ng-click="puzzle.ctrl.solve()">solve</button>
+            </div>
+            <puzzle class="puzzle" ctrl="puzzle.ctrl" size="{{puzzle.rows}}x{{puzzle.cols}}" src="{{puzzle.src}}"></puzzle>
         </div>
-        <div class="status">
-            moves: <strong>{{puzzle.ctrl.moves}}</strong><br/>
-            solved: <strong>{{puzzle.ctrl.isSolved()}}</strong>
-        </div>
-        <div class="size">
-            rows: <input type="text" ng-model="puzzle.rows" size="2"/>
-            cols: <input type="text" ng-model="puzzle.cols" size="2"/><br/>
-            <button ng-click="puzzle.ctrl.shuffle()">shuffle</button>
-            <button ng-click="puzzle.ctrl.solve()">solve</button>
-        </div>
-        <puzzle class="puzzle" ctrl="puzzle.ctrl" size="{{puzzle.rows}}x{{puzzle.cols}}" src="{{puzzle.src}}"></puzzle>
-    </div>
-</fieldset>
+    </fieldset>
 </body>
 </html>

@@ -3,10 +3,9 @@
 
     app.controller('puzzleCtrl', function($scope) {
         $scope.puzzles = [
-            { src: './img/angular.png', title: 'AngularJS', rows: 3, cols: 3 },
-            { src: './img/chrome.png', title: 'Google Chrome', rows: 4, cols: 4 },
-            { src: './img/firefox.png', title: 'Mozilla Firefox', rows: 5, cols: 5 },
-            { src: './img/ie.png', title: 'Internet Explorer', rows: 3, cols: 4 }
+            { src: './img/misko.jpg', title: 'Miško Hevery', rows: 4, cols: 4 },
+            { src: './img/igor.jpg', title: 'Igor Minár', rows: 3, cols: 3 },
+            { src: './img/vojta.jpg', title: 'Vojta Jína', rows: 4, cols: 3 }
         ];
     });
 
