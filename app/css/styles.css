@@ -1,9 +1,25 @@
 * {
     font-family: 'Arial', 'Helvetica';
 }
-fieldset {
-    margin-bottom: 30px;
+body {
+    background-color: #f4f4f4;
 }
+fieldset {
+    margin: 0 0 30px 0;
+    padding: 18px;
+    border: 2px solid #ddd;
+    background-color: white;
+    border-radius: 10px;
+    display: inline-block;
+}
+legend {
+    font-weight: bold;
+    padding: 3px 12px;
+    display: block;
+    background-color: #e4e4e4;
+    border-radius: 6px;
+}
+
 .puzzle {
     border: 1px solid #ccc;
     border-spacing: 0;
@@ -16,36 +32,38 @@ fieldset {
     border: none;
     background-color: #ddd !important;
 }
-.advanced {
+
+#advanced > div {
     float: left;
-    padding: 20px;
-    margin: 0 20px 0 0;
+    margin: 0 40px 0 0;
     min-width: 300px;
 }
-.advanced .puzzle {
+#advanced .puzzle {
     clear: both;
     margin-top: 30px;
 }
-.advanced.solved .puzzle td {
+#advanced .solved .puzzle td {
     border: none;
 }
-.advanced .puzzle td {
+#advanced .puzzle td {
     cursor: pointer;
     padding: 0;
 }
-.advanced h2 {
+#advanced h2 {
     margin: 0 0 10px 0;
 }
-.advanced .status {
+#advanced .status {
     float: left;
     width: 40%;
     height: 50px;
 }
-.advanced .size {
+#advanced .size {
     float: right;
     height: 50px;
+    text-align: right;
 }
-.advanced .src input {
-    width: 100%;
+#advanced .src input {
+    width: 98%;
     font-family: "Courier New";
+    margin-bottom: 4px;
 }
