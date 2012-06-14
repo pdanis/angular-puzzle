@@ -27,10 +27,15 @@ legend {
 .puzzle td {
     border-collapse: collapse;
     border: 2px outset white;
+    cursor: pointer;
+    padding: 0;
 }
-.puzzle td.empty {
+.puzzle td.puzzle-empty {
     border: none;
     background-color: #ddd !important;
+}
+.puzzle-solved td {
+    border: none;
 }
 
 #advanced > div {
@@ -41,13 +46,6 @@ legend {
 #advanced .puzzle {
     clear: both;
     margin-top: 30px;
-}
-#advanced .solved .puzzle td {
-    border: none;
-}
-#advanced .puzzle td {
-    cursor: pointer;
-    padding: 0;
 }
 #advanced h2 {
     margin: 0 0 10px 0;
