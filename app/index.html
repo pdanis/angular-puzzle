@@ -3,7 +3,7 @@
 <head>
     <title>AngularJS puzzle</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <script type="text/javascript" src="lib/angular/angular-1.0.0rc10.min.js"></script>
+    <script type="text/javascript" src="lib/angular/angular.js"></script>
     <script type="text/javascript" src="js/puzzle.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
     <link rel="stylesheet" type="text/css" href="css/styles.css"/>
@@ -18,7 +18,7 @@
 
     <fieldset id="advanced" ng-controller="advancedCtrl">
         <legend>Advanced</legend>
-        <div ng-repeat="puzzle in puzzles" ng-class="{solved: puzzle.ctrl.isSolved()}">
+        <div ng-repeat="puzzle in puzzles">
             <h2>{{puzzle.title}}</h2>
             <div class="src">
                 <input type="text" ng-model="puzzle.src"/>

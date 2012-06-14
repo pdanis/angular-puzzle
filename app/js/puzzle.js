@@ -8,7 +8,7 @@
             return a;
         }
 
-        function Puzzle(rows, cols) {
+        return function(rows, cols) {
             /**
              * Puzzle grid
              * @type {Array}
@@ -114,32 +114,38 @@
                 }
             });
         }
-
-        return function(rows, cols) {
-            return new Puzzle(rows, cols);
-        }
     });
 
     module.directive('puzzle', function(Puzzle) {
         return {
             restrict: 'E',
             replace: true,
-            template: '<table>' +
+            template: '<table ng-class="{\'puzzle-solved\': puzzle.isSolved()}">' +
                 '<tr ng-repeat="($row, row) in puzzle.grid">' +
-                '<td ng-repeat="($col, tile) in row" ng-click="puzzle.move($row, $col)" ng-style="tile.style" ng-class="{empty: tile.empty}" title="{{tile.id}}"></td>' +
+                '<td ng-repeat="($col, tile) in row" ng-click="puzzle.move($row, $col)" ng-style="tile.style" ng-class="{\'puzzle-empty\': tile.empty}" title="{{tile.id}}"></td>' +
                 '</tr>' +
                 '</table>',
             scope: {
-                size: 'bind',
-                src: 'bind',
-                ctrl: 'accessor'
+                size: '@',
+                src: '@',
+                ctrl: '='
             },
-            link: function(scope) {
-                var puzzle, rows, cols,
+            link: function(scope, element, attrs) {
+                var rows, cols,
                     loading = true,
                     image = new Image();
 
                 function create() {
+                    scope.puzzle = new Puzzle(rows, cols);
+
+                    if (attrs.ctrl) {
+                        scope.ctrl = scope.puzzle;
+                    }
+
+                    tile();
+                }
+
+                function tile() {
                     if (loading) {
                         return;
                     }
@@ -147,10 +153,7 @@
                     var width = image.width / cols,
                         height = image.height / rows;
 
-                    puzzle = scope.puzzle = Puzzle(rows, cols);
-                    scope.ctrl(puzzle);
-
-                    puzzle.traverse(function(tile, row, col) {
+                    scope.puzzle.traverse(function(tile, row, col) {
                         tile.style = {
                             width: width + 'px',
                             height: height + 'px',
@@ -158,10 +161,10 @@
                         }
                     });
 
-                    puzzle.shuffle();
+                    scope.puzzle.shuffle();
                 }
 
-                scope.$watch('size', function(size) {
+                attrs.$observe('size', function(size) {
                     size = size.split('x');
                     if (size[0] >= 2 && size[1] >= 2) {
                         rows = size[0];
@@ -170,13 +173,13 @@
                     }
                 });
 
-                scope.$watch('src', function(src) {
+                attrs.$observe('src', function(src) {
                     loading = true;
                     image.src = src;
                     image.onload = function() {
                         loading = false;
                         scope.$apply(function() {
-                            create();
+                            tile();
                         });
                     };
                 });
