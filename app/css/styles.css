@@ -1,8 +1,9 @@
 * {
-    font-family: 'Arial', 'Helvetica';
+    font: 12pt 'Arial', 'Helvetica';
 }
 body {
     background-color: #f4f4f4;
+    margin-top: 110px;
 }
 fieldset {
     margin: 0 0 30px 0;
@@ -20,47 +21,81 @@ legend {
     border-radius: 6px;
 }
 
-.puzzle {
+.sliding-puzzle {
     border: 1px solid #ccc;
     border-spacing: 0;
 }
-.puzzle td {
+.sliding-puzzle td {
     border-collapse: collapse;
     border: 2px outset white;
     cursor: pointer;
     padding: 0;
 }
-.puzzle td.puzzle-empty {
+.sliding-puzzle .puzzle-empty {
     border: none;
     background-color: #ddd !important;
 }
-.puzzle-solved td {
+.sliding-puzzle.puzzle-solved td {
     border: none;
 }
 
-#advanced > div {
+
+#types {
+    margin: 0 0 40px 0;
+    padding: 10px;
+    list-style: none;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f4f4f4;
+}
+#types li {
+    display: inline-block;
+    padding: 10px;
+    margin-right: 40px;
+}
+#types li a {
+    font-size: 22pt;
+    color: #999;
+}
+#types li.selected {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #999;
+    -webkit-box-shadow: 0 0 5px #999;
+    -moz-box-shadow: 0 0 5px #999;
+}
+#types li.selected a {
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+}
+
+#sliding-advanced > div {
     float: left;
     margin: 0 40px 0 0;
     min-width: 300px;
 }
-#advanced .puzzle {
+#sliding-advanced .sliding-puzzle {
     clear: both;
     margin-top: 30px;
 }
-#advanced h2 {
+#sliding-advanced h2 {
     margin: 0 0 10px 0;
 }
-#advanced .status {
+#sliding-advanced .status {
     float: left;
     width: 40%;
     height: 50px;
 }
-#advanced .size {
+#sliding-advanced .size {
     float: right;
     height: 50px;
     text-align: right;
 }
-#advanced .src input {
+#sliding-advanced .src input {
     width: 98%;
     font-family: "Courier New";
     margin-bottom: 4px;

@@ -1,16 +1,32 @@
-describe('Puzzle', function() {
+describe('Sliding puzzle', function() {
     var puzzle,
         rows = 2,
         cols = 3;
 
-    beforeEach(module('puzzle'));
+    function fireEvent(element, event) {
+        var evt;
+        if (document.createEvent) {
+            evt = document.createEvent('HTMLEvents');
+            evt.initEvent(event, true, true);
+            return !element.dispatchEvent(evt);
+        } else {
+            evt = document.createEventObject();
+            return element.fireEvent('on' + event, evt);
+        }
+    }
+
+    function click(element) {
+        fireEvent(element, 'click');
+    }
+
+    beforeEach(module('slidingPuzzle'));
 
     /**
      * Controller tests
      */
     describe('puzzle object', function() {
-        beforeEach(inject(function(Puzzle) {
-            puzzle = new Puzzle(rows, cols);
+        beforeEach(inject(function(slidingPuzzle) {
+            puzzle = slidingPuzzle(rows, cols);
         }));
 
         function tile(row, col) {
@@ -90,7 +106,7 @@ describe('Puzzle', function() {
             inject(function($compile, $rootScope) {
                 scope = $rootScope.$new();
                 scope.size = size;
-                template = $compile('<puzzle ctrl="ctrl" size="{{size}}" src="img/angular.png"></puzzle>')(scope);
+                template = $compile('<sliding-puzzle api="api" size="{{size}}" src="img/angular.png"></sliding-puzzle>')(scope);
                 templateScope = template.scope();
                 scope.$apply();
             });
@@ -101,11 +117,11 @@ describe('Puzzle', function() {
             expect(scope.puzzle).toBeUndefined();
         });
 
-        it('should assign the puzzle object into parent scope by "ctrl" accessor', function() {
-            expect(typeof(scope.ctrl)).toBe('object');
-            expect(scope.ctrl.grid).toBeDefined();
-            expect(scope.ctrl.grid.length).toBe(2);
-            expect(scope.ctrl.grid[0].length).toBe(3);
+        it('should assign the puzzle object into parent scope by "api" accessor', function() {
+            expect(typeof(scope.api)).toBe('object');
+            expect(scope.api.grid).toBeDefined();
+            expect(scope.api.grid.length).toBe(2);
+            expect(scope.api.grid[0].length).toBe(3);
         });
 
         it('should initialize size in directive scope', function() {
@@ -138,7 +154,7 @@ describe('Puzzle', function() {
                 node = tile(x, y)[0];
 
             expect(node.title).toBe('5');
-            node.click();
+            click(node);
             expect(tile(x, y)[0]).not.toBe('5');
             expect(tile(x, y + 1)[0].title).toBe('5');
             expect(tile(x, y).hasClass('puzzle-empty')).toBe(true);
@@ -147,7 +163,7 @@ describe('Puzzle', function() {
         it('should not "move" non-movable first tile on click', function() {
             var node = tile(0, 0)[0];
             expect(node.title).toBe('1');
-            node.click();
+            click(node);
             expect(tile(0, 0)[0].title).toBe('1');
         });
 

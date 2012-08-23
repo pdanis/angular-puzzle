@@ -7,7 +7,7 @@ describe('App', function() {
 
         beforeEach(inject(function($controller, $rootScope) {
             scope = $rootScope.$new();
-            ctrl = $controller('advancedCtrl', {
+            ctrl = $controller('slidingAdvancedCtrl', {
                 $scope: scope
             });
         }));

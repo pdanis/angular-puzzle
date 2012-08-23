@@ -3,38 +3,51 @@
 <head>
     <title>AngularJS puzzle</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <script type="text/javascript" src="lib/angular/angular.js"></script>
-    <script type="text/javascript" src="js/puzzle.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/lib/angular/angular.js"></script>
+    <script type="text/javascript" src="js/puzzle/slidingPuzzle.js"></script>
+	<!--<script type="text/javascript" src="js/wordSearchPuzzle.js"></script>-->
+	<script type="text/javascript" src="js/app.js"></script>
     <link rel="stylesheet" type="text/css" href="css/styles.css"/>
 </head>
 <body ng-app="puzzleApp">
-    <h1>AngularJS sliding puzzle</h1>
+	<ul id="types">
+		<li ng-repeat="t in types" ng-class="{'selected': t.id == type}">
+			<a ng-href="#/{{t.id}}">{{t.title}}</a>
+		</li>
+	</ul>
 
-    <fieldset id="simple">
-        <legend>Basic</legend>
-        <puzzle class="puzzle" size="3x3" src="img/angular.png"></puzzle>
-    </fieldset><br/>
+	<div ng-include="type"></div>
 
-    <fieldset id="advanced" ng-controller="advancedCtrl">
-        <legend>Advanced</legend>
-        <div ng-repeat="puzzle in puzzles">
-            <h2>{{puzzle.title}}</h2>
-            <div class="src">
-                <input type="text" ng-model="puzzle.src"/>
-            </div>
-            <div class="status">
-                moves: <strong>{{puzzle.ctrl.moves}}</strong><br/>
-                solved: <strong>{{puzzle.ctrl.isSolved()}}</strong>
-            </div>
-            <div class="size">
-                rows: <input type="text" ng-model="puzzle.rows" size="2"/>
-                cols: <input type="text" ng-model="puzzle.cols" size="2"/><br/>
-                <button ng-click="puzzle.ctrl.shuffle()">shuffle</button>
-                <button ng-click="puzzle.ctrl.solve()">solve</button>
-            </div>
-            <puzzle class="puzzle" ctrl="puzzle.ctrl" size="{{puzzle.rows}}x{{puzzle.cols}}" src="{{puzzle.src}}"></puzzle>
-        </div>
-    </fieldset>
+	<script type="text/ng-template" id="sliding-puzzle">
+		<fieldset id="sliding-simple">
+			<legend>Basic</legend>
+			<sliding-puzzle size="3x3" src="img/angular.png"></sliding-puzzle>
+		</fieldset><br/>
+
+		<fieldset id="sliding-advanced" ng-controller="slidingAdvancedCtrl">
+			<legend>Advanced</legend>
+			<div ng-repeat="puzzle in puzzles">
+				<h2>{{puzzle.title}}</h2>
+				<div class="src">
+					<input type="text" ng-model="puzzle.src"/>
+				</div>
+				<div class="status">
+					moves: <strong>{{puzzle.api.moves}}</strong><br/>
+					solved: <strong>{{puzzle.api.isSolved()}}</strong>
+				</div>
+				<div class="size">
+					rows: <input type="text" ng-model="puzzle.rows" size="2"/>
+					cols: <input type="text" ng-model="puzzle.cols" size="2"/><br/>
+					<button ng-click="puzzle.api.shuffle()">shuffle</button>
+					<button ng-click="puzzle.api.solve()">solve</button>
+				</div>
+				<sliding-puzzle api="puzzle.api" size="{{puzzle.rows}}x{{puzzle.cols}}" src="{{puzzle.src}}"></sliding-puzzle>
+			</div>
+		</fieldset>
+	</script>
+
+	<script type="text/ng-template" id="word-search-puzzle">
+		<em>coming soon</em>
+	</script>
 </body>
 </html>
