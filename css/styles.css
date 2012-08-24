@@ -1,8 +1,9 @@
-* {
-    font-family: 'Arial', 'Helvetica';
-}
+/* General */
 body {
-    background-color: #f4f4f4;
+    font: 12pt 'Arial', 'Helvetica';
+    background-color: #f7f7f7;
+    margin-top: 110px;
+    margin-left: 20px;
 }
 fieldset {
     margin: 0 0 30px 0;
@@ -19,49 +20,179 @@ legend {
     background-color: #e4e4e4;
     border-radius: 6px;
 }
+ul {
+    margin: 0;
+    padding: 0;
+}
 
-.puzzle {
+
+/* Puzzle widgets */
+
+.sliding-puzzle {
     border: 1px solid #ccc;
     border-spacing: 0;
 }
-.puzzle td {
+.sliding-puzzle td {
     border-collapse: collapse;
     border: 2px outset white;
     cursor: pointer;
     padding: 0;
 }
-.puzzle td.puzzle-empty {
+.sliding-puzzle .puzzle-empty {
     border: none;
     background-color: #ddd !important;
 }
-.puzzle-solved td {
+.sliding-puzzle.puzzle-solved td {
     border: none;
 }
 
-#advanced > div {
+.word-search-puzzle {
+    border: 1px solid #999;
+}
+.word-search-puzzle td {
+    background-color: white;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+.word-search-puzzle.puzzle-solved td {
+    background-color: #eee;
+}
+.word-search-puzzle td span {
+    display: table-cell;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+}
+.word-search-puzzle .puzzle-found {
+    background-color: #eee;
+}
+.word-search-puzzle .puzzle-selected {
+    background-color: #f5f5f5;
+}
+.word-search-puzzle .puzzle-message span {
+    background-color: #ffffcc;
+    color: red;
+    font-weight: bold;
+    border-radius: 15px;
+    box-shadow: 0 0 5px #444;
+}
+
+
+/* Application */
+
+#types {
+    margin: 0 0 40px 0px;
+    padding: 10px;
+    list-style: none;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f3f3f3;
+}
+#types li {
+    display: inline-block;
+    padding: 10px;
+    margin-right: 40px;
+}
+#types li a {
+    font-size: 22pt;
+    color: #999;
+}
+#types li.selected {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #999;
+    -webkit-box-shadow: 0 0 5px #999;
+    -moz-box-shadow: 0 0 5px #999;
+}
+#types li.selected a {
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+}
+
+#fork {
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: block;
+    width: 149px;
+    height: 149px;
+    background: url('https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png') no-repeat;
+}
+#powered {
+    position: fixed;
+    right: 20px;
+    bottom: 15px;
+    display: block;
+}
+#powered img {
+    opacity: 0.4;
+    width: 200px;
+}
+
+#sliding-advanced > div {
     float: left;
     margin: 0 40px 0 0;
     min-width: 300px;
 }
-#advanced .puzzle {
+#sliding-advanced .sliding-puzzle {
     clear: both;
     margin-top: 30px;
 }
-#advanced h2 {
+#sliding-advanced h2 {
     margin: 0 0 10px 0;
+    font-weight: bold;
 }
-#advanced .status {
+#sliding-advanced .status {
     float: left;
     width: 40%;
     height: 50px;
 }
-#advanced .size {
+#sliding-advanced .size {
     float: right;
     height: 50px;
     text-align: right;
 }
-#advanced .src input {
+#sliding-advanced .src input {
     width: 98%;
     font-family: "Courier New";
     margin-bottom: 4px;
+}
+
+#word-search {
+    position: relative;
+}
+#word-search .word-search-puzzle {
+    float: left;
+}
+#word-search .words {
+    list-style: none;
+    float: left;
+    margin: 4px 20px 0 0;
+}
+#word-search .words li {
+    font-size: 12px;
+    margin-bottom: 4px;
+    text-align: center;
+}
+#word-search .words .found {
+    color: #bbb;
+    text-decoration: line-through;
+    font-weight: normal
+}
+#word-search .status {
+    position: absolute;
+    left: 0;
+    top: 330px;
+    text-align: center;
+    width: 80px;
+    font-weight: bold;
 }

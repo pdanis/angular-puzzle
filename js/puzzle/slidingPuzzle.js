@@ -1,14 +1,19 @@
 (function(angular) {
+    'use strict';
 
-    var module = angular.module('puzzle', []);
+    var module = angular.module('slidingPuzzle', []);
 
-    module.factory('Puzzle', function() {
+    /**
+     * Service
+     */
+    module.factory('slidingPuzzle', function() {
         function shuffle(a) {
-            for (var j, x, i = a.length; i; j = parseInt(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x) {}
+            var q;
+            for (var j, x, i = a.length; i; j = parseInt(Math.random() * i, 10), x = a[--i], a[i] = a[j], a[j] = x) { q = 0; }
             return a;
         }
 
-        return function(rows, cols) {
+        function SlidingPuzzle(rows, cols) {
             /**
              * Puzzle grid
              * @type {Array}
@@ -81,13 +86,13 @@
                 var id = 1;
                 for (var row = 0; row < rows; row++) {
                     for (var col = 0; col < cols; col++) {
-                        if (this.grid[row][col].id != id++) {
+                        if (this.grid[row][col].id !== id++) {
                             return false;
                         }
                     }
                 }
                 return true;
-            }
+            };
 
             /**
              * Traverses grid and executes fn on every tile
@@ -104,23 +109,32 @@
             // initialize grid
             var id = 1;
             this.traverse(function(tile, row, col) {
-                this.grid[row] || (this.grid[row] = []);
+                if (!this.grid[row]) {
+                    this.grid[row] = [];
+                }
                 this.grid[row][col] = {
                     id: id++,
-                    empty: (row == rows - 1) && (col == cols - 1)
+                    empty: (row === rows - 1) && (col === cols - 1)
                 };
                 if (this.grid[row][col].empty) {
                     this.empty = this.grid[row][col];
                 }
             });
         }
+
+        return function(rows, cols) {
+            return new SlidingPuzzle(rows, cols);
+        };
     });
 
-    module.directive('puzzle', function(Puzzle) {
+    /**
+     * Directive
+     */
+    module.directive('slidingPuzzle', function(slidingPuzzle) {
         return {
-            restrict: 'E',
+            restrict: 'EA',
             replace: true,
-            template: '<table ng-class="{\'puzzle-solved\': puzzle.isSolved()}">' +
+            template: '<table class="sliding-puzzle" ng-class="{\'puzzle-solved\': puzzle.isSolved()}">' +
                 '<tr ng-repeat="($row, row) in puzzle.grid">' +
                 '<td ng-repeat="($col, tile) in row" ng-click="puzzle.move($row, $col)" ng-style="tile.style" ng-class="{\'puzzle-empty\': tile.empty}" title="{{tile.id}}"></td>' +
                 '</tr>' +
@@ -128,7 +142,7 @@
             scope: {
                 size: '@',
                 src: '@',
-                ctrl: '='
+                api: '='
             },
             link: function(scope, element, attrs) {
                 var rows, cols,
@@ -136,10 +150,10 @@
                     image = new Image();
 
                 function create() {
-                    scope.puzzle = new Puzzle(rows, cols);
+                    scope.puzzle = slidingPuzzle(rows, cols);
 
-                    if (attrs.ctrl) {
-                        scope.ctrl = scope.puzzle;
+                    if (attrs.api) {
+                        scope.api = scope.puzzle;
                     }
 
                     tile();
@@ -158,7 +172,7 @@
                             width: width + 'px',
                             height: height + 'px',
                             background: (tile.empty ? 'none' : "url('" + scope.src + "') no-repeat -" + (col * width) + 'px -' + (row * height) + 'px')
-                        }
+                        };
                     });
 
                     scope.puzzle.shuffle();
@@ -184,6 +198,6 @@
                     };
                 });
             }
-        }
+        };
     });
-})(angular);
+})(window.angular);
