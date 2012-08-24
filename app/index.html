@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script type="text/javascript" src="js/lib/angular/angular.js"></script>
     <script type="text/javascript" src="js/puzzle/slidingPuzzle.js"></script>
-	<!--<script type="text/javascript" src="js/wordSearchPuzzle.js"></script>-->
+	<script type="text/javascript" src="js/puzzle/wordSearchPuzzle.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
     <link rel="stylesheet" type="text/css" href="css/styles.css"/>
 </head>
@@ -17,6 +17,9 @@
 	</ul>
 
 	<div ng-include="type"></div>
+
+	<a id="fork" href="https://github.com/pdanis/angular-puzzle" title="Fork me on GitHub"></a>
+	<a id="powered" href="http://angularjs.org" title="powered by AngularJS"><img src="http://www.angularjs.org/img/AngularJS-large.png"/></a>
 
 	<script type="text/ng-template" id="sliding-puzzle">
 		<fieldset id="sliding-simple">
@@ -47,7 +50,18 @@
 	</script>
 
 	<script type="text/ng-template" id="word-search-puzzle">
-		<em>coming soon</em>
+		<div id="word-search" ng-controller="wordSearchCtrl">
+			<ul class="words">
+				<li ng-repeat="word in puzzle.words" ng-class="{'found': word.found}">
+					{{word.name}}
+				</li>
+			</ul>
+			<word-search-puzzle matrix="matrix" words="words" api="puzzle"></word-search-puzzle>
+			<div class="status">
+				<button ng-click="puzzle.solve()" ng-show="!puzzle.solved" class="solve">solve</button>
+				<strong ng-show="puzzle.solved" ng-show="puzzle.solved">Solved!</strong>
+			</div>
+		</div>
 	</script>
 </body>
 </html>

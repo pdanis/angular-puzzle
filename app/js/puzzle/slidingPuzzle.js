@@ -4,7 +4,7 @@
     var module = angular.module('slidingPuzzle', []);
 
     /**
-     * Sliding puzzle service
+     * Service
      */
     module.factory('slidingPuzzle', function() {
         function shuffle(a) {
@@ -128,11 +128,11 @@
     });
 
     /**
-     * Sliding puzzle directive
+     * Directive
      */
     module.directive('slidingPuzzle', function(slidingPuzzle) {
         return {
-            restrict: 'E',
+            restrict: 'EA',
             replace: true,
             template: '<table class="sliding-puzzle" ng-class="{\'puzzle-solved\': puzzle.isSolved()}">' +
                 '<tr ng-repeat="($row, row) in puzzle.grid">' +
