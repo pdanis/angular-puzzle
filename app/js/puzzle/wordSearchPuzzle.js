@@ -168,6 +168,7 @@
                         if (word.found) {
                             return;
                         }
+
                         angular.forEach(directions, function(shift) {
                             if (word.found) {
                                 return;
@@ -195,11 +196,10 @@
         return {
             restrict: 'EA',
             replace: true,
-            template: '<table class="word-search-puzzle" cellspacing="0" ng-class="{\'puzzle-solved\': puzzle.solved}">' +
-                '<tr ng-repeat="items in puzzle.matrix">' +
+            template: '<table class="word-search-puzzle" cellspacing="0" ondragstart="return false;" ng-class="{\'puzzle-solved\': puzzle.solved}">' +
+                '<tr ng-repeat="items in puzzle.matrix" id="{{$index}}">' +
                 '<td ng-repeat="item in items" unselectable="on"' +
-                ' ng-class="{\'puzzle-found\': item.found, \'puzzle-selected\': item.selected, \'puzzle-message\': puzzle.solved && !item.found}"' +
-                ' ng-mousedown="selectStart(item)" ng-mouseup="selectEnd()" ng-mouseenter="selectEnter(item)">' +
+                ' id="{{$index}}" data-col={{parent.$index}} ng-class="{\'puzzle-found\': item.found, \'puzzle-selected\': item.selected, \'puzzle-message\': puzzle.solved && !item.found}" >' +
                 ' <span>{{item.letter}}</span>' +
                 '</td>' +
                 '</tr>' +
@@ -210,7 +210,7 @@
                 api: '='
             },
             link: function(scope, element, attrs) {
-                var selectFrom;
+                var selectFrom, selectFromiPad;
 
                 // setup puzzle
                 scope.$watch('matrix', function(matrix) {
@@ -228,32 +228,73 @@
                  */
                 scope.selected = [];
 
-                /**
-                 * Selection start
-                 * @param item
-                 */
-                scope.selectStart = function(item) {
+                $('body').on( "vmousedown", ".word-search-puzzle tr td", function(e){
+                    e.preventDefault();
+                    var item = {
+                        letter: $(document.elementFromPoint(e.pageX, e.pageY)).text(),
+                        col:    parseInt($(this).attr('id')),
+                        row:    parseInt($(this).parent().attr('id')),
+                        used:   false
+                    };
                     selectFrom = item;
-                };
+                    selectFromiPad = item;
+                });
 
-                /**
-                 * Selection enter (over)
-                 * @param item
-                 */
-                scope.selectEnter = function(item) {
-                    if (selectFrom) {
-                        scope.selected = scope.puzzle.getItems(selectFrom.col, selectFrom.row, item.col, item.row);
+                $('body').on( "vmousemove", ".word-search-puzzle tr td", function(e){
+
+                    if (selectFromiPad) {
+                        e.preventDefault();
+                        var ele = $(document.elementFromPoint(e.pageX, e.pageY)).parent(),
+                            col = parseInt(ele.attr('id')),
+                            row = parseInt(ele.parent().attr('id'));
+
+                        scope.selected = scope.puzzle.getItems(selectFromiPad.col, selectFromiPad.row, col, row);
                     }
-                };
+                });
 
-                /**
-                 * Selection end
-                 */
-                scope.selectEnd = function() {
-                    selectFrom = null;
+                $('body').on( "vmouseup", ".word-search-puzzle tr td", function(e){
+                    e.preventDefault();
+                    selectFromiPad = null;
                     scope.puzzle.lookup(scope.selected);
                     scope.selected = [];
-                };
+                });
+
+                scope.$on('solveWordSearch', function (event, args) {
+                    var start = {},
+                        directions = {
+                            N: [0, -1], E: [1, 0], S: [0, 1], W: [-1, 0],
+                            NE: [1, -1], NW: [-1, -1], SE: [1, 1], SW: [-1, 1]
+                        };
+
+                    // group items by letters for faster search
+                    angular.forEach(scope.puzzle.matrix, function(items) {
+                        angular.forEach(items, function(item) {
+                            if (!start[item.letter]) {
+                                start[item.letter] = [];
+                            }
+                            start[item.letter].push(item);
+                        });
+                    });
+
+                    angular.forEach(scope.puzzle.words, function(word) {
+                        angular.forEach(start[word.name.charAt(0)], function(start) {
+                            if (word.found) {
+                                return;
+                            }
+
+                            angular.forEach(directions, function(shift) {
+                                if (word.found) {
+                                    return;
+                                }
+                                scope.puzzle.lookup(scope.puzzle.getItems(
+                                    start.col, start.row,
+                                    start.col + (word.name.length - 1) * shift[0],
+                                    start.row + (word.name.length - 1) * shift[1]
+                                ));
+                            }, scope.puzzle);
+                        }, scope.puzzle);
+                    }, scope.puzzle);
+                });
 
                 // propagate selection state to matrix
                 scope.$watch('selected', function(newItems, oldItems) {
